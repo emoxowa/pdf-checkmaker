@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Чек № {{ invoice.invoice_id }}</title>
+<style>
+  @page { size: 80mm 200mm; margin: 6mm; }
+  body { font-size: 9pt; color: #000; }
+  h1 { text-align: center; font-size: 12pt; margin: 0 0 2mm; }
+  .center { text-align: center; }
+  .muted { color: #555; }
+  hr { border: 0; border-top: 1px dashed #000; margin: 3mm 0; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 1mm 0; vertical-align: top; }
+  td.num { text-align: right; white-space: nowrap; }
+  .total { font-size: 11pt; font-weight: bold; }
+</style>
+</head>
+<body>
+  <h1>КАССОВЫЙ ЧЕК</h1>
+  <div class="center">№ {{ invoice.invoice_id }}{% if invoice.date %} от {{ invoice.date }}{% endif %}</div>
+  {% if invoice.customer %}<div class="center muted">Покупатель: {{ invoice.customer }}</div>{% endif %}
+  <hr>
+  <table>
+    {% for item in items %}
+    <tr><td colspan="2">{{ item.name }}</td></tr>
+    <tr class="muted">
+      <td>{{ item.quantity|qty }} × {{ item.price|money }}</td>
+      <td class="num">= {{ item.total|money }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <hr>
+  <table>
+    <tr class="total"><td>ИТОГО</td><td class="num">{{ invoice.total|money }} ₽</td></tr>
+  </table>
+  <hr>
+  <div class="center muted">Спасибо за покупку!<br>{{ generated_at }}</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Счёт № {{ invoice.invoice_id }}</title>
+<style>
+  @page { size: A4; margin: 18mm; @bottom-right { content: "Стр. " counter(page) " из " counter(pages); font-size: 8pt; color: #888; } }
+  body { font-size: 10pt; color: #222; }
+  header { display: flex; justify-content: space-between; border-bottom: 2px solid #2b5797; padding-bottom: 4mm; }
+  h1 { margin: 0; color: #2b5797; font-size: 20pt; }
+  .meta { text-align: right; }
+  .block { margin: 6mm 0; }
+  .label { color: #888; font-size: 8pt; text-transform: uppercase; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #2b5797; color: #fff; text-align: left; padding: 2mm; font-weight: bold; }
+  td { padding: 2mm; border-bottom: 1px solid #ddd; }
+  tr:nth-child(even) td { background: #f4f6fa; }
+  .num { text-align: right; white-space: nowrap; }
+  .total td { font-weight: bold; font-size: 12pt; border-bottom: none; background: none; }
+  footer { margin-top: 10mm; color: #888; font-size: 8pt; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Счёт</h1>
+    <div class="meta">
+      <div><b>№ {{ invoice.invoice_id }}</b></div>
+      {% if invoice.date %}<div>Дата: {{ invoice.date }}</div>{% endif %}
+    </div>
+  </header>
+
+  <div class="block">
+    <div class="label">Покупатель</div>
+    <div>{{ invoice.customer or "—" }}</div>
+    {% if invoice.address %}<div>{{ invoice.address }}</div>{% endif %}
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>№</th><th>Наименование</th><th class="num">Кол-во</th><th class="num">Цена</th><th class="num">Сумма</th></tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ item.name }}</td>
+        <td class="num">{{ item.quantity|qty }}</td>
+        <td class="num">{{ item.price|money }}</td>
+        <td class="num">{{ item.total|money }}</td>
+      </tr>
+      {% endfor %}
+      <tr class="total"><td colspan="4" class="num">Итого:</td><td class="num">{{ invoice.total|money }} ₽</td></tr>
+    </tbody>
+  </table>
+
+  <footer>Источник данных: {{ source }} · Сформировано {{ generated_at }}</footer>
+</body>
+</html>
