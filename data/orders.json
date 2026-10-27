@@ -1,0 +1,20 @@
+[
+  {
+    "invoice_id": "A-501",
+    "date": "2026-10-15",
+    "customer": "Сидоров Пётр",
+    "address": "г. Москва, ул. Ленина, д. 1",
+    "items": [
+      {"name": "Наушники беспроводные", "quantity": 1, "price": 5990},
+      {"name": "Чехол для наушников", "quantity": 1, "price": 790}
+    ]
+  },
+  {
+    "invoice_id": "A-502",
+    "date": "2026-10-16",
+    "customer": "Smith John",
+    "items": [
+      {"name": "USB-C кабель 2 м", "quantity": 3, "price": 450}
+    ]
+  }
+]
